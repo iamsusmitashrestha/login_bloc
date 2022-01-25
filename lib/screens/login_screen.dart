@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:login_bloc/blocs/bloc.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -8,21 +9,35 @@ class LoginScreen extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.all(20),
       child: Column(
-        children: const [
-          TextField(
-            keyboardType: TextInputType.emailAddress,
-            decoration: InputDecoration(
-              hintText: 'you@example.com',
-              labelText: 'Email Address',
-            ),
+        children: [
+          StreamBuilder(
+            stream: bloc.email,
+            builder: (context, snapshot) {
+              return TextField(
+                onChanged: bloc.changeEmail,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  hintText: 'you@example.com',
+                  labelText: 'Email Address',
+                  errorText: (snapshot.error as String?),
+                ),
+              );
+            },
           ),
-          TextField(
-            obscureText: true,
-            decoration: InputDecoration(
-              hintText: 'Password',
-              labelText: 'Password',
-            ),
+          StreamBuilder(
+            stream: bloc.password,
+            builder: (context, snapshot) {
+              return TextField(
+                onChanged: bloc.changePassword,
+                obscureText: true,
+                decoration: const InputDecoration(
+                  hintText: 'Password',
+                  labelText: 'Password',
+                ),
+              );
+            },
           ),
+
           // ElevatedButton(onPressed: (){}, child: Text("Submit"),),
         ],
       ),
